@@ -16,6 +16,17 @@ type User struct {
 	Email     string
 	Password  string
 	CreatedAt time.Time
+	Salt      string
+}
+
+func NewUser(username string, password string) (user User) {
+
+	user.Name = username
+	user.createPassword(password)
+	user.CreatedAt = time.Now()
+
+	return
+
 }
 
 func UserByEmail(email string) (user User, err error) {
@@ -36,17 +47,37 @@ func UserByEmail(email string) (user User, err error) {
 	return
 }
 
-func Encrypt(input string, salt *string) (encrypted string) {
+// func Encrypt(input string) (encrypted string) {
 
+// 	rand.Seed(time.Now().Unix())
+// 	randInt := rand.Int()
+// 	salt := strconv.Itoa(randInt)
+// 	fmt.Println(salt)
+
+// 	hasher := sha1.New()
+// 	io.WriteString(hasher, input)
+// 	io.WriteString(hasher, salt)
+// 	fmt.Println(hasher)
+// 	fmt.Println(hasher.Sum(nil))
+// 	return
+// }
+
+func (user *User) createPassword(password string) (err error) {
 	rand.Seed(time.Now().Unix())
 	randInt := rand.Int()
-	*salt = strconv.Itoa(randInt)
-	fmt.Println(*salt)
+	salt := strconv.Itoa(randInt)
 
 	hasher := sha1.New()
-	io.WriteString(hasher, input)
-	io.WriteString(hasher, *salt)
-	fmt.Println(hasher)
-	fmt.Println(hasher.Sum(nil))
+	io.WriteString(hasher, password)
+	io.WriteString(hasher, salt)
+
+	user.Password = fmt.Sprintf("%x", hasher.Sum(nil))
+	user.Salt = salt
+
+	return
+}
+
+func Encrypt(plaintext string) (cryptext string) {
+	cryptext = fmt.Sprintf("%x", sha1.Sum([]byte(plaintext)))
 	return
 }

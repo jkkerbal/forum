@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jkkerbal/forum/data"
+
 	"html/template"
 	"net/http"
 )
@@ -13,13 +13,13 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", files))
 
 	mux.HandleFunc("/", index)
-	// mux.HandleFunc("/err", err)
+	mux.HandleFunc("/err", err)
 
-	// mux.HandleFunc("/login", login)
-	// mux.HandleFunc("/logout", logout)
-	// mux.HandleFunc("/signup", signup)
+	mux.HandleFunc("/login", login)
+	mux.HandleFunc("/logout", logout)
+	mux.HandleFunc("/signup", signup)
 	// mux.HandleFunc("/signup_account", signupAccount)
-	// mux.HandleFunc("/authenticate", authenticate)
+	mux.HandleFunc("/authenticate", authenticate)
 
 	// mux.HandleFunc("/thread/new", newThread)
 	// mux.HandleFunc("/thread/create", createThread)
@@ -32,23 +32,6 @@ func main() {
 	}
 
 	server.ListenAndServe()
-}
-
-func index(w http.ResponseWriter, r *http.Request) {
-
-	threads, err := data.Threads()
-	if err == nil {
-
-		_, err := session(w, r)
-
-		if err != nil {
-			generateHTML(w, threads, "layout", "public.navbar", "index")
-		} else {
-			generateHTML(w, threads, "layout", "private.navbar", "index")
-		}
-
-	}
-
 }
 
 func generateHTML(w http.ResponseWriter, data interface{}, fn ...string) {
