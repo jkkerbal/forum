@@ -19,9 +19,10 @@ type User struct {
 	Salt      string
 }
 
-func NewUser(username string, password string) (user User) {
+func NewUser(email string, username string, password string) (user User) {
 
 	user.Name = username
+	user.Email = email
 	user.createPassword(password)
 	user.CreatedAt = time.Now()
 

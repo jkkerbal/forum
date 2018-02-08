@@ -8,7 +8,7 @@
 			<span class="lead"><i class="fa fa-commnet-o"></i>{{ .Topic }}</span>
 		</div>
 		<div class="panel-body">
-			Started by {{ .User.Name }} - {{ .CreatedAtDate }} - {{ .NumReplies }} posts.
+			Started at {{ .CreatedAt }} - {{ .NumReplies }} posts.
 			<div class="Pull-right">
 				<a href="/thread/read?id={{ .Uuid }}">Read more</a>
 			</div>
